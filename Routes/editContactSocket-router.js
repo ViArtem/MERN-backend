@@ -19,8 +19,8 @@ async function updateUser(name, number, id, ownerId, role) {
       const newUserLastName = splitFullName(name)[1];
       const newUserNum = number;
 
-      if (newUserLastName == "undefined") {
-        return false;
+      if (newUserLastName == "undefined" || newUserFirstName == "undefined") {
+        return "Enter full name";
       } else {
         let updateUser = await editUserSocket(
           newUserFirstName,
@@ -31,15 +31,15 @@ async function updateUser(name, number, id, ownerId, role) {
           role
         );
         if (updateUser != "Update error") {
-          return true;
-        } else return false;
+          return updateUser;
+        } else return "Update error";
       }
     } else {
-      return false;
+      return "Full name or number don't valid";
     }
   } catch (error) {
     console.log(`Updating error: ${error}`);
-    return false;
+    return JSON.stringify({ ErrorMessage: error });
   }
 }
 

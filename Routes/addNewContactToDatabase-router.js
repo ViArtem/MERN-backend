@@ -15,7 +15,7 @@ let addNumber;
 //Adding a user to the database
 routerAddContact.post("/add", async (req, res) => {
   //routerAdd
-  console.log(req.headers);
+
   try {
     //Phone number validation
 

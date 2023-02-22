@@ -27,7 +27,6 @@ function socketData() {
     // Adding a user
     socket.on("send user value", async (data) => {
       const addStatus = await addUserToDatabaseSocket(data);
-      //console.log(`Socket: Add request ${data.fullName}`);
       await addNewEventToDatabase(`Socket: Add ${data.fullName}`);
       if (addStatus.name) {
         io.sockets.emit("add user", {
@@ -91,13 +90,17 @@ function socketData() {
         data.ownerId,
         data.userRole
       );
-      if (update) {
+      if (
+        update == "Enter full name" ||
+        "Full name or number don't valid" ||
+        "Update error"
+      ) {
         io.sockets.emit("edit user", {
-          userFirstName: data.newFullName,
+          userFirstName: update,
         });
       } else {
         io.sockets.emit("edit user", {
-          userFirstName: "Incorrect data",
+          userFirstName: update,
         });
       }
     });

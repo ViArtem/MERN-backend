@@ -45,7 +45,7 @@ routerEditContact.post("/edit", async (req, res) => {
       res.status(415).send(JSON.stringify("Number or name is not valid"));
     }
   } catch (error) {
-    res.status(error.status).send(JSON.stringify("Server error"));
+    res.status(error.status).json({ ServerError: error });
   }
 });
 

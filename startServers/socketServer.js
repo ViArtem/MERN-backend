@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 4000;
 // start the socket server
 function startSocketServer() {
   try {
-    const server = require("https").createServer(app);
+    const server = require("http").createServer(app);
     io = require("socket.io")(server, {
       cors: {
-        origin: "https://front-byn3.onrender.com/",
+        origin: "https://front-byn3.onrender.com",
       },
     });
 

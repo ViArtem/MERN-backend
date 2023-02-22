@@ -11,6 +11,7 @@ async function connectToDatabase() {
     console.log("Connect to database");
   } catch (e) {
     console.log(e);
+    return JSON.stringify({ DatabaseConnectError: e });
   }
 }
 export { connectToDatabase, db };
