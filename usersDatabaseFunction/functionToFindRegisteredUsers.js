@@ -22,7 +22,7 @@ async function findsRegisterdUserById(customId) {
     return findUser;
   } catch (e) {
     console.log("Opss ..." + e);
-    return e;
+    return JSON.stringify({ userFoundError: e });
   }
 }
 

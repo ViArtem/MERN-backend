@@ -7,22 +7,30 @@ const require = createRequire(import.meta.url);
 let jwt = require("jsonwebtoken");
 
 function genRefreshToken(id, username) {
-  const payload = {
-    id,
-    username,
-  };
-  return jwt.sign(payload, refreshKey, { expiresIn: "3d" });
+  try {
+    const payload = {
+      id,
+      username,
+    };
+    return jwt.sign(payload, refreshKey, { expiresIn: "3d" });
+  } catch (error) {
+    return JSON.stringify({ refreshTokenValidate: error });
+  }
 }
 
 function generationRefreshTokenAfterUpdatingAccess(id, username, iat, exp) {
-  const payload = {
-    id: id,
-    username: username,
-  };
+  try {
+    const payload = {
+      id: id,
+      username: username,
+    };
 
-  return jwt.sign(payload, refreshKey, {
-    expiresIn: `${exp - iat - 900}s`, //`${(exp - Date.now() / 1000) / 3600 / 24}h`,
-  });
+    return jwt.sign(payload, refreshKey, {
+      expiresIn: `${exp - iat - 900}s`, //`${(exp - Date.now() / 1000) / 3600 / 24}h`,
+    });
+  } catch (error) {
+    return JSON.stringify({ refreshTokenValidate: error });
+  }
 }
 
 export { genRefreshToken, generationRefreshTokenAfterUpdatingAccess };

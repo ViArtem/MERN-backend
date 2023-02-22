@@ -15,7 +15,7 @@ async function addUserToDatabase(firstName, lastName, number, owner) {
     return newUser;
   } catch (e) {
     console.log(e);
-    return e;
+    return JSON.stringify({ addDatabaseError: e });
   }
 }
 

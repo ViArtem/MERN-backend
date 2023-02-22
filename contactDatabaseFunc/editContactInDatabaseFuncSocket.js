@@ -35,7 +35,7 @@ async function editUserSocket(
     } else return "Update error";
   } catch (e) {
     console.log(e);
-    return e;
+    return JSON.stringify({ editDatabaseError: e });
   }
 }
 

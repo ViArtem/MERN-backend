@@ -21,6 +21,7 @@ async function registNewUser(
     return registNewUser;
   } catch (e) {
     console.log(e);
+    return JSON.stringify({ userRegisterError: e });
   }
 }
 

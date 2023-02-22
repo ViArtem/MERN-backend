@@ -6,7 +6,7 @@ async function findAllPersonFromeDatabase() {
     return await Person.find({}).lean();
   } catch (error) {
     console.log(error);
-    return error;
+    return JSON.stringify({ findAllDatabaseError: error });
   }
 }
 

@@ -20,7 +20,7 @@ async function delleteUserFromDatabaseFunction(
     } else return "Delete error";
   } catch (error) {
     console.log(error);
-    return error;
+    return JSON.stringify({ deleteDatabaseError: error });
   }
 }
 

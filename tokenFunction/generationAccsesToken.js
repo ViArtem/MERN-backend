@@ -6,13 +6,17 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 let jwt = require("jsonwebtoken");
 function genAccsessToken(id, username, role) {
-  const payload = {
-    id,
-    username,
-    role,
-  };
+  try {
+    const payload = {
+      id,
+      username,
+      role,
+    };
 
-  return jwt.sign(payload, key, { expiresIn: "15m" });
+    return jwt.sign(payload, key, { expiresIn: "15m" });
+  } catch (error) {
+    return JSON.stringify({ accsessTokenValidate: error });
+  }
 }
 
 export { genAccsessToken };

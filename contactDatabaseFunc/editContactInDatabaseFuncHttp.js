@@ -32,7 +32,7 @@ async function editUser(ownerId, role) {
     } else return "Update error";
   } catch (e) {
     console.log(e);
-    return e;
+    return JSON.stringify({ editDatabaseError: e });
   }
 }
 

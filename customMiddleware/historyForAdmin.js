@@ -29,6 +29,7 @@ Date.prototype.today = function () {
   );
 };
 
+//The function intercepts http requests and adds them to the database
 function getHistory(req, res, next) {
   try {
     if (req.body.action) {

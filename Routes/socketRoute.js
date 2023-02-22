@@ -58,6 +58,9 @@ function socketData() {
         socket.emit("findOne user", {
           foundData,
         });
+        await addNewEventToDatabase(
+          `Socket: Find ${data.fullName} : ${new Date().timeNow()}`
+        );
       }
     });
 
@@ -79,6 +82,10 @@ function socketData() {
           userFirstName: data,
           deleted: true,
         });
+
+        await addNewEventToDatabase(
+          `Socket: Delete ${data.fullName} : ${new Date().timeNow()}`
+        );
       }
     });
 
@@ -103,6 +110,10 @@ function socketData() {
         io.sockets.emit("edit user", {
           userFirstName: update,
         });
+
+        await addNewEventToDatabase(
+          `Socket: Edit ${data.fullName} : ${new Date().timeNow()}`
+        );
       }
     });
   });
