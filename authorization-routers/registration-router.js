@@ -50,7 +50,10 @@ routerRegist.post("/regist", async (req, res) => {
     if (validateUserPassword == false) {
       return res
         .status(401)
-        .json({ success: "The password does not meet the requirements" });
+        .json({
+          success:
+            "The password does not meet the requirements. It must contain the following characters: 'A-Z', 'a-z', '0-9', '!,@, #' and be at least 6 characters long",
+        });
     }
 
     if (validateUserEmail == false) {

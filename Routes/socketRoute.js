@@ -27,7 +27,9 @@ function socketData() {
     // Adding a user
     socket.on("send user value", async (data) => {
       const addStatus = await addUserToDatabaseSocket(data);
-      await addNewEventToDatabase(`Socket: Add ${data.fullName}`);
+      await addNewEventToDatabase(
+        `Socket: Add ${data.fullName} : ${new Date().timeNow()}`
+      );
       if (addStatus.name) {
         io.sockets.emit("add user", {
           newUserData: addStatus,
@@ -40,7 +42,6 @@ function socketData() {
     });
 
     //User search
-
     socket.on("find user value", async (data, id) => {
       const foundData = await findUserByName(data);
       if (foundData == "User not found") {

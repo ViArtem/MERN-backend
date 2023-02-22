@@ -6,7 +6,7 @@ import { getAllAdministratorHistory } from "../historyDatabaseFunction/getAllHis
 adminRouter.post("/gethistory", async (req, res) => {
   try {
     if (req.body.role == "admin") {
-      res.status(200).send(await getAllAdministratorHistory());
+      res.send(await getAllAdministratorHistory());
     } else res.status(404).json({ access: "You are not an administrator" });
   } catch (error) {
     res.status(error.status).send(JSON.stringify(`Error ${error.message}`));

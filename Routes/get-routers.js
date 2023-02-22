@@ -13,14 +13,6 @@ import { checkRegist } from "../customMiddleware/tokenVerification.js";
 // A function that finds all users available in the database
 import { findAllPersonFromeDatabase } from "../contactDatabaseFunc/findAllContactInDatabaseGeneral.js";
 
-// routerGet.get("/auth", cookieParser(), async (req, res) => {
-//   res.render(path.resolve("view", "authorization.html"));
-// });
-
-// routerGet.get("/regist", async (req, res) => {
-//   res.render(path.resolve("view", "registration.html"));
-// });
-
 routerGet.get("/allUser", async (req, res) => {
   try {
     let allUser = await findAllPersonFromeDatabase();
