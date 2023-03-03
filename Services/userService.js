@@ -33,7 +33,7 @@ class userService {
         customId
       );
 
-      const accessToken = tokenGeneration.accessToken(
+      const accessToken = await tokenGeneration.accessToken(
         customId,
         `${firstName} ${lastName}`,
         newUser.role
