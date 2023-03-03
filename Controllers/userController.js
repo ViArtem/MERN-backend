@@ -51,9 +51,11 @@ class userHttpController {
         throw ApiError.BadRequest(`User already exists`);
       }
 
-      res
-        .status(200)
-        .json({ success: "The user is registered", token: registrationStatus });
+      res.status(200).json({
+        success: "The user is registered",
+        accessToken: registrationStatus.access,
+        refreshToken: registrationStatus.refresh,
+      });
     } catch (error) {
       next(error);
     }

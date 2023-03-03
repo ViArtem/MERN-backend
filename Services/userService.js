@@ -33,11 +33,12 @@ class userService {
         customId
       );
 
-      return tokenGeneration.accessToken(
+      const accessToken = tokenGeneration.accessToken(
         customId,
         `${firstName} ${lastName}`,
         newUser.role
       );
+      return { access: accessToken, refresh: userRefreshToken };
     } catch (error) {
       return error;
     }
