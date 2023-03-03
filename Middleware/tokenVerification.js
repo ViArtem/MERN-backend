@@ -10,7 +10,7 @@ async function checkToken(req, res, next) {
     }
     // checking for the presence of a token
     if (req.headers.authorization == undefined) {
-      return res.redirect("/user/registration");
+      return res.redirect("https://front-byn3.onrender.com/user/registration");
     }
 
     // access token verification
