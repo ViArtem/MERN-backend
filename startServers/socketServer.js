@@ -12,7 +12,7 @@ function startSocketServer() {
     const server = require("http").createServer(app);
     io = require("socket.io")(server, {
       cors: {
-        origin: "https://front-byn3.onrender.com", // http://localhost:3000
+        origin: process.env.FRONTEND_URL,
       },
     });
 

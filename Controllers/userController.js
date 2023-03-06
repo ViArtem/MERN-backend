@@ -1,5 +1,9 @@
 import ApiError from "../Exсeptions/apiError.js";
 import userService from "../Services/userService.js";
+import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
+import userDatabaseService from "../Database/userDatabaseService.js";
+import tokenGeneration from "../tokenFunction/tokenGeneration.js";
 class userHttpController {
   // user registration controller
   async registrationUser(req, res, next) {
@@ -73,7 +77,7 @@ class userHttpController {
         email.trim()
       );
       if (authenticationResult.success == `Incorrect email or password`) {
-        throw ApiError.UnauthorizedError(`Incorrect email or password`);
+        throw ApiError.BadRequest(`Incorrect email or password`);
       }
 
       if (authenticationResult.success == `User is authorized`) {
@@ -86,6 +90,50 @@ class userHttpController {
       }
     } catch (error) {
       next(error);
+    }
+  }
+  async refresh(req, res, next) {
+    try {
+      const refreshData = jwt.verify(
+        req.headers.refresh,
+        process.env.REFRESH_KEY
+      );
+
+      const refreshFromDatabase = await userDatabaseService.findUserById(
+        refreshData.id
+      );
+      const correctRefresh = req.headers.refresh;
+      const accessData = jwt_decode(req.headers.authorization.split(" ")[1]);
+
+      if (refreshData && correctRefresh == refreshFromDatabase.refresh) {
+        const newAccess = await tokenGeneration.accessToken(
+          accessData.id,
+          accessData.username,
+          accessData.role
+        );
+        const newRefresh =
+          await tokenGeneration.refreshAfterUpdatingAccessToken(
+            accessData.id,
+            accessData.username,
+            refreshData.exp,
+            refreshData.iat
+          );
+
+        await userDatabaseService.databaseAddRefreshToken(
+          refreshData.id,
+          newRefresh
+        );
+
+        return res.json({
+          access: newAccess,
+          refresh: newRefresh,
+        });
+      } else {
+        return res.status(403).json({ error: "incorrect refresh" });
+      }
+    } catch (error) {
+      return res.status(403).json({ error: "incorrect refresh" });
+      //next(error)
     }
   }
 }

@@ -111,7 +111,7 @@ class contactHttpController {
   // data retrieval controller to find all available contacts
   async findAllContact(req, res, next) {
     try {
-      return res.status(200).json(await contactHttpService.getAllContact());
+      return res.status(200).json(await contactHttpService.getAllContact()); //;
     } catch (error) {
       next(error);
     }

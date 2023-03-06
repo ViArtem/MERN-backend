@@ -36,13 +36,13 @@ class userDatabaseService {
       return error;
     }
   }
-  async databaseAddRefreshToken(id, refresh) {
+  async databaseAddRefreshToken(id, refreshToken) {
     try {
       return await Users.updateOne(
         { customId: id },
         {
           $set: {
-            refresh,
+            refresh: refreshToken,
           },
         }
       );

@@ -43,6 +43,7 @@ class userService {
       return error;
     }
   }
+  //
   async authenticationUser(password, email) {
     try {
       const checkingUserRegistered = await userDatabaseService.findUser(email);
@@ -71,7 +72,7 @@ class userService {
       );
 
       await userDatabaseService.databaseAddRefreshToken(
-        checkingUserRegistered.id,
+        checkingUserRegistered.customId,
         userRefreshToken
       );
 
