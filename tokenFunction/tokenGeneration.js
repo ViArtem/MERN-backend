@@ -10,7 +10,7 @@ class toketGeneration {
         role,
       };
 
-      return jwt.sign(payload, process.env.ACCESS_KEY, { expiresIn: "30s" });
+      return jwt.sign(payload, process.env.ACCESS_KEY, { expiresIn: "15m" });
     } catch (error) {
       return { accsessTokenValidate: error };
     }
