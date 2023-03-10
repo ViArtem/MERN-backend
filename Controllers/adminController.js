@@ -1,6 +1,6 @@
-import adminServise from "../Services/adminServise.js";
+import adminServise from "../services/adminServiсe.js";
 import jwt_decode from "jwt-decode";
-import ApiError from "../Exсeptions/apiError.js";
+import ApiError from "../exсeptions/apiError.js";
 
 class adminController {
   // a request from the administrator to receive the entire history

@@ -1,6 +1,6 @@
 import { app } from "../server.js";
 import { createRequire } from "node:module";
-import { socketData } from "../Controllers/contactSocketController.js";
+import { socketData } from "../controllers/contactSocketController.js";
 import { connectToDatabase } from "../connectToDatabase.js";
 const require = createRequire(import.meta.url);
 

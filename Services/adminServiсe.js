@@ -1,8 +1,9 @@
-import adminDatabaseService from "../Database/adminDatabaseService.js";
+import { adminGetAllHistory } from "../adapters/adminAdapter.js";
+
 class adminService {
   async getHistory() {
     try {
-      return await adminDatabaseService.getHistory();
+      return await adminGetAllHistory();
     } catch (error) {
       return error;
     }

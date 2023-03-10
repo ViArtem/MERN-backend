@@ -1,7 +1,8 @@
 import { io } from "../startServers/socketServer.js";
-import contactHttpService from "../Services/contactService.js";
-import otherFunction from "../Exсeptions/otherFunction.js";
-import adminDatabaseService from "../Database/adminDatabaseService.js";
+import contactHttpService from "../services/contactService.js";
+import Helpers from "../exсeptions/Helpers.js";
+import { adminAddAction } from "../adapters/adminAdapter.js";
+import adminDatabaseService from "../database/adminDatabaseService.js";
 let connections = [];
 
 //handles socket requests
@@ -23,7 +24,7 @@ function socketData() {
           userErrorName: "The value cannot be empty",
         });
       }
-      if (otherFunction.dataValidation(data.fullName, data.number)) {
+      if (Helpers.dataValidation(data.fullName, data.number)) {
         return io.sockets.emit("add user", {
           userErrorName: otherFunction.dataValidation(
             data.fullName.trim(),
@@ -32,11 +33,14 @@ function socketData() {
         });
       }
       //request to create a contact
-      const newSocketUser = await contactHttpService.addNewContact(
-        otherFunction.allFirstLettersCapitalized(data.fullName),
-        data.number,
-        data.ownerId
+      const newSocketUser = JSON.parse(
+        await contactHttpService.addNewContact(
+          Helpers.allFirstLettersCapitalized(data.fullName),
+          data.number,
+          data.ownerId
+        )
       );
+
       if (newSocketUser.success == "Such a contact already exists") {
         return io.sockets.emit("add user", {
           userErrorName: newSocketUser.success,
@@ -46,10 +50,8 @@ function socketData() {
         newUserData: newSocketUser,
       });
       // add an action to the story
-      await adminDatabaseService.addNewAction(
-        `Socket: Add ${data.fullName}`,
-        Date.now()
-      );
+      await adminAddAction(`Socket: Add ${data.fullName}`, Date.now());
+      //
     });
 
     //controller for receiving data to find a contact
@@ -65,7 +67,7 @@ function socketData() {
 
       //request to find a contact
       const foundData = await contactHttpService.findContact(
-        otherFunction.allFirstLettersCapitalized(data.fullName.trim())
+        Helpers.allFirstLettersCapitalized(data.fullName.trim())
       );
 
       if (foundData == null) {
@@ -84,10 +86,7 @@ function socketData() {
         });
 
         // add an action to the story
-        await adminDatabaseService.addNewAction(
-          `Socket: Find ${data.fullName}`,
-          Date.now()
-        );
+        await adminAddAction(`Socket: Find ${data.fullName}`, Date.now());
       }
     });
 
@@ -105,10 +104,7 @@ function socketData() {
       });
 
       // add an action to the story
-      await adminDatabaseService.addNewAction(
-        `Socket: Delete ${data.fullName}`,
-        Date.now()
-      );
+      await adminAddAction(`Socket: Delete ${data.fullName}`, Date.now());
     });
 
     // controller to receive data to update the contact
@@ -121,13 +117,10 @@ function socketData() {
       }
 
       if (
-        otherFunction.dataValidation(
-          data.newFullName.trim(),
-          data.newNumber.trim()
-        )
+        Helpers.dataValidation(data.newFullName.trim(), data.newNumber.trim())
       ) {
         return io.sockets.emit("edit user", {
-          userErrorName: otherFunction.dataValidation(
+          userErrorName: Helpers.dataValidation(
             data.newFullName.trim(),
             data.newNumber.trim()
           ).success,
@@ -136,22 +129,20 @@ function socketData() {
 
       // request to update a contact
       const updatingUser = await contactHttpService.updateContact(
-        otherFunction.allFirstLettersCapitalized(data.newFullName),
+        Helpers.allFirstLettersCapitalized(data.newFullName),
         data.newNumber.trim(),
         data.idForUpdate.trim(),
         data.owner,
         data.userRole
       );
+
       if (updatingUser.fullName) {
         io.sockets.emit("edit user", {
           userFirstName: updatingUser,
         });
 
         // add an action to the story
-        await adminDatabaseService.addNewAction(
-          `Socket: Edit ${updatingUser.fullName}`,
-          Date.now()
-        );
+        await adminAddAction(`Socket: Edit ${data.fullName}`, Date.now());
       } else {
         io.sockets.emit("edit user", {
           userFirstName: "User don't update",

@@ -1,8 +1,8 @@
-import adminDatabaseService from "../Database/adminDatabaseService.js";
-function setHistory(req, res, next) {
+import { adminAddAction } from "../adapters/adminAdapter.js";
+async function setHistory(req, res, next) {
   try {
     if (req.body.action) {
-      adminDatabaseService.addNewAction(
+      await adminAddAction(
         `Http: ${req.body.action} ${req.body.fullName}`,
         new Date()
       );

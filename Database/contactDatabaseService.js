@@ -1,5 +1,7 @@
-import Contact from "../Models/Contact.js";
+import Contact from "../models/Contact.js";
 // queries to the database with contacts
+try {
+} catch (error) {}
 class contactDatabaseService {
   //contact creation
   async addContactToDatabase(fullName, number, owner) {
@@ -33,7 +35,7 @@ class contactDatabaseService {
       return error;
     }
   }
-  // contact update
+  // Contact update
   async updateContactInDatabase(fullName, number, id) {
     try {
       return await Contact.findByIdAndUpdate(
@@ -49,7 +51,7 @@ class contactDatabaseService {
       return error;
     }
   }
-  //deleting a contact
+  // Deleting a contact
   async deleteContactOnDatabase(fullName) {
     try {
       return await Contact.deleteOne({
@@ -59,7 +61,7 @@ class contactDatabaseService {
       return error;
     }
   }
-  //contact update
+  // Contact update
   async getAllContactFromDatabase() {
     try {
       return await Contact.find({});

@@ -1,4 +1,4 @@
-class otherFunction {
+class Helpers {
   // validation of the contact number and name
   dataValidation(fullName, number) {
     const regularExpretionNumber =
@@ -22,4 +22,4 @@ class otherFunction {
   }
 }
 
-export default new otherFunction();
+export default new Helpers();

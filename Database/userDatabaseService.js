@@ -1,4 +1,4 @@
-import Users from "../Models/Users.js";
+import Users from "../models/Users.js";
 // database queries with users
 class userDatabaseService {
   async findUser(email) {

@@ -1,6 +1,6 @@
-import contactHttpService from "../Services/contactService.js";
-import otherFunction from "../Exсeptions/otherFunction.js";
-import ApiError from "../Exсeptions/apiError.js";
+import contactHttpService from "../services/contactService.js";
+import Helpers from "../exсeptions/Helpers.js";
+import ApiError from "../exсeptions/apiError.js";
 class contactHttpController {
   // controller to receive data to create a new contact
   async addContact(req, res, next) {
@@ -13,15 +13,15 @@ class contactHttpController {
       if (contactName == "" || contactNumber == "") {
         throw ApiError.BadRequest("The value cannot be empty");
       }
-      if (otherFunction.dataValidation(contactName, contactNumber)) {
+      if (Helpers.dataValidation(contactName, contactNumber)) {
         throw ApiError.BadRequest(
-          otherFunction.dataValidation(contactName, contactNumber).success
+          Helpers.dataValidation(contactName, contactNumber).success
         );
       }
 
       //request to create a contact
       const newContact = await contactHttpService.addNewContact(
-        otherFunction.allFirstLettersCapitalized(contactName),
+        Helpers.allFirstLettersCapitalized(contactName),
         contactNumber,
         contactOwner
       );
@@ -45,7 +45,7 @@ class contactHttpController {
 
       // request to find a contact
       const foundContact = await contactHttpService.findContact(
-        otherFunction.allFirstLettersCapitalized(fullName)
+        Helpers.allFirstLettersCapitalized(fullName)
       );
 
       if (foundContact == null) {
@@ -88,15 +88,13 @@ class contactHttpController {
         throw ApiError.BadRequest("The value cannot be empty");
       }
 
-      if (otherFunction.dataValidation(fullName, number)) {
-        throw ApiError.BadRequest(
-          otherFunction.dataValidation(fullName, number)
-        );
+      if (Helpers.dataValidation(fullName, number)) {
+        throw ApiError.BadRequest(Helpers.dataValidation(fullName, number));
       }
 
       // request to update a contact
       const updatedUser = await contactHttpService.updateContact(
-        otherFunction.allFirstLettersCapitalized(fullName.trim()),
+        Helpers.allFirstLettersCapitalized(fullName.trim()),
         number.trim(),
         id,
         owner,

@@ -1,4 +1,4 @@
-import History from "../Models/History.js";
+import History from "../models/History.js";
 class adminDatabaseService {
   // request to receive the entire history for the administrator
   async getHistory() {

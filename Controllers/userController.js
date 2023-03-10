@@ -1,9 +1,9 @@
-import ApiError from "../Exсeptions/apiError.js";
-import userService from "../Services/userService.js";
+import ApiError from "../exсeptions/apiError.js";
+import userService from "../services/userService.js";
 import jwt from "jsonwebtoken";
 import jwt_decode from "jwt-decode";
-import userDatabaseService from "../Database/userDatabaseService.js";
-import tokenGeneration from "../tokenFunction/tokenGeneration.js";
+import userDatabaseService from "../database/userDatabaseService.js";
+
 class userHttpController {
   // user registration controller
   async registrationUser(req, res, next) {
@@ -103,35 +103,25 @@ class userHttpController {
         refreshData.id
       );
       const correctRefresh = req.headers.refresh;
+
       const accessData = jwt_decode(req.headers.authorization.split(" ")[1]);
 
       if (refreshData && correctRefresh == refreshFromDatabase.refresh) {
-        const newAccess = await tokenGeneration.accessToken(
-          accessData.id,
-          accessData.username,
-          accessData.role
-        );
-        const newRefresh =
-          await tokenGeneration.refreshAfterUpdatingAccessToken(
-            accessData.id,
-            accessData.username,
-            refreshData.exp,
-            refreshData.iat
-          );
+        const validateRefresh = await userService.verifyRefresh(
+          refreshData,
 
-        await userDatabaseService.databaseAddRefreshToken(
-          refreshData.id,
-          newRefresh
+          accessData
         );
 
         return res.json({
-          access: newAccess,
-          refresh: newRefresh,
+          access: validateRefresh.newAccess,
+          refresh: validateRefresh.newRefresh,
         });
       } else {
         return res.status(403).json({ error: "incorrect refresh" });
       }
     } catch (error) {
+      console.log(error);
       return res.status(403).json({ error: "incorrect refresh" });
       //next(error)
     }

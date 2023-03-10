@@ -8,12 +8,12 @@ const app = express();
 //custom modules
 import { startSocketServer } from "./startServers/socketServer.js";
 import { startHttpServer } from "./startServers/httpServer.js";
-import { contactRouter } from "./Routes/contactRouter.js";
-import { userRouter } from "./Routes/userRouter.js";
-import { checkToken } from "./Middleware/tokenVerification.js";
-import { adminRouter } from "./Routes/adminRouter.js";
-import { setHistory } from "./Middleware/setHistory.js";
-import errorMiddleware from "./Middleware/errors.js";
+import { contactRouter } from "./routes/contactRouter.js";
+import { userRouter } from "./routes/userRouter.js";
+import { checkToken } from "./middleware/tokenVerification.js";
+import { adminRouter } from "./routes/adminRouter.js";
+import { setHistory } from "./middleware/setHistory.js";
+import errorMiddleware from "./middleware/errors.js";
 //
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
