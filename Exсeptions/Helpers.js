@@ -21,5 +21,7 @@ class Helpers {
       .join(" ");
   }
 }
-
-export default new Helpers();
+const dataValidation = new Helpers().dataValidation;
+const allFirstLettersCapitalized = new Helpers().allFirstLettersCapitalized;
+export default { dataValidation, allFirstLettersCapitalized };
+//export default new Helpers();

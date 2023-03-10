@@ -30,7 +30,7 @@ class contactAdapter {
   }
   async deleteContact(name) {
     if (process.env.QUERY_PARAMETERS == "mongo") {
-      return await contactDatabaseService.findContactInDatabase(name);
+      return await contactDatabaseService.deleteContactOnDatabase(name);
     } else {
       return await contactFileRequest.deleteContact(name);
     }

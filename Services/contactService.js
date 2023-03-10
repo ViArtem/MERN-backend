@@ -12,12 +12,6 @@ class contactHttpService {
       }
 
       return await contactAdapter.addContact(name, number, owner);
-
-      // return await contactDatabaseService.addContactToDatabase(
-      //   name,
-      //   number,
-      //   owner
-      // );
     } catch (error) {
       return error;
     }

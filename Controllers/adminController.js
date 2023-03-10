@@ -12,7 +12,7 @@ class adminController {
         return res.status(200).json(await adminServise.getHistory());
       }
       // error handling
-      throw ApiError.BadRequest("you don't have enough rights");
+      throw ApiError.RefreshError("you don't have enough rights");
     } catch (error) {
       next(error);
     }

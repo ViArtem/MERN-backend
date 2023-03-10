@@ -72,7 +72,7 @@ class contactHttpController {
         deleteSuccess.success == "You don't have enough rights" ||
         deleteSuccess.noFound
       ) {
-        return res.status(403).json(deleteSuccess);
+        throw ApiError.RefreshError(deleteSuccess.success);
       }
       return res.status(200).json(deleteSuccess);
     } catch (error) {

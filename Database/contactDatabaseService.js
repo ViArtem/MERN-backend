@@ -1,32 +1,43 @@
 import Contact from "../models/Contact.js";
 // queries to the database with contacts
-try {
-} catch (error) {}
+
 class contactDatabaseService {
+  async handleErrors(promise) {
+    try {
+      const result = await promise;
+
+      return result;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
   //contact creation
   async addContactToDatabase(fullName, number, owner) {
-    try {
-      return await new Contact({
+    return await this.handleErrors(
+      new Contact({
         fullName,
         number,
         owner,
-      }).save();
-    } catch (error) {
-      return error;
-    }
+      }).save()
+    );
   }
   // Find a contact by name
   async findContactInDatabase(fullName) {
-    try {
-      return await Contact.findOne({
+    return await this.handleErrors(
+      Contact.findOne({
         fullName,
-      });
-    } catch (error) {
-      return error;
-    }
+      })
+    );
   }
   // Find a contact by id
   async findContactInDatabaseById(_id) {
+    return await this.handleErrors(
+      Contact.findOne({
+        _id,
+      })
+    );
+    /*
     try {
       return await Contact.findOne({
         _id,
@@ -34,11 +45,12 @@ class contactDatabaseService {
     } catch (error) {
       return error;
     }
+    */
   }
   // Contact update
   async updateContactInDatabase(fullName, number, id) {
-    try {
-      return await Contact.findByIdAndUpdate(
+    return await this.handleErrors(
+      Contact.findByIdAndUpdate(
         { _id: id },
         {
           $set: {
@@ -46,29 +58,23 @@ class contactDatabaseService {
           },
           number: number,
         }
-      );
-    } catch (error) {
-      return error;
-    }
+      )
+    );
   }
   // Deleting a contact
   async deleteContactOnDatabase(fullName) {
-    try {
-      return await Contact.deleteOne({
+    return await this.handleErrors(
+      Contact.deleteOne({
         fullName,
-      });
-    } catch (error) {
-      return error;
-    }
+      })
+    );
   }
   // Contact update
   async getAllContactFromDatabase() {
-    try {
-      return await Contact.find({});
-    } catch (error) {
-      return error;
-    }
+    return await this.handleErrors(Contact.find({}));
   }
 }
 
 export default new contactDatabaseService();
+/*
+ */

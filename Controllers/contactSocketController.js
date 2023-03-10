@@ -2,7 +2,7 @@ import { io } from "../startServers/socketServer.js";
 import contactHttpService from "../services/contactService.js";
 import Helpers from "../exсeptions/Helpers.js";
 import { adminAddAction } from "../adapters/adminAdapter.js";
-import adminDatabaseService from "../database/adminDatabaseService.js";
+
 let connections = [];
 
 //handles socket requests
@@ -25,8 +25,9 @@ function socketData() {
         });
       }
       if (Helpers.dataValidation(data.fullName, data.number)) {
+        //
         return io.sockets.emit("add user", {
-          userErrorName: otherFunction.dataValidation(
+          userErrorName: Helpers.dataValidation(
             data.fullName.trim(),
             data.number.trim()
           ).success,

@@ -77,7 +77,7 @@ class userHttpController {
         email.trim()
       );
       if (authenticationResult.success == `Incorrect email or password`) {
-        throw ApiError.BadRequest(`Incorrect email or password`);
+        throw ApiError.UnauthorizedError(`Incorrect email or password`);
       }
 
       if (authenticationResult.success == `User is authorized`) {
@@ -109,7 +109,6 @@ class userHttpController {
       if (refreshData && correctRefresh == refreshFromDatabase.refresh) {
         const validateRefresh = await userService.verifyRefresh(
           refreshData,
-
           accessData
         );
 
@@ -118,12 +117,14 @@ class userHttpController {
           refresh: validateRefresh.newRefresh,
         });
       } else {
-        return res.status(403).json({ error: "incorrect refresh" });
+        throw ApiError.RefreshError("incorrect refresh");
+        //return res.status(403).json({ error: "incorrect refresh" });
       }
     } catch (error) {
-      console.log(error);
-      return res.status(403).json({ error: "incorrect refresh" });
-      //next(error)
+      //throw ApiError.RefreshError("incorrect refresh");
+      //console.log(error);
+      res.status(403).json({ error: "incorrect refresh" });
+      next(error);
     }
   }
 }

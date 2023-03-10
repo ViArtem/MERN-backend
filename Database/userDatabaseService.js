@@ -1,20 +1,24 @@
 import Users from "../models/Users.js";
 // database queries with users
 class userDatabaseService {
+  async handleErrors(promise) {
+    try {
+      const result = await promise;
+
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+  //
   async findUser(email) {
-    try {
-      return await Users.findOne({ email });
-    } catch (error) {
-      return error;
-    }
+    return await this.handleErrors(Users.findOne({ email }));
   }
+  //
   async findUserById(customId) {
-    try {
-      return await Users.findOne({ customId });
-    } catch (error) {
-      return error;
-    }
+    return await this.handleErrors(Users.findOne({ customId }));
   }
+  //
   async databaseRegistrationUser(
     firstName,
     lastName,
@@ -23,6 +27,17 @@ class userDatabaseService {
     refresh,
     customId
   ) {
+    return await this.handleErrors(
+      new Users({
+        email,
+        firstName,
+        lastName,
+        password,
+        refresh,
+        customId,
+      }).save()
+    );
+    /*
     try {
       return await new Users({
         email,
@@ -35,8 +50,21 @@ class userDatabaseService {
     } catch (error) {
       return error;
     }
+    */
   }
+  //
   async databaseAddRefreshToken(id, refreshToken) {
+    return await this.handleErrors(
+      Users.updateOne(
+        { customId: id },
+        {
+          $set: {
+            refresh: refreshToken,
+          },
+        }
+      )
+    );
+    /*
     try {
       return await Users.updateOne(
         { customId: id },
@@ -49,6 +77,7 @@ class userDatabaseService {
     } catch (error) {
       return error;
     }
+    */
   }
 }
 
