@@ -4,9 +4,7 @@ class contactHttpService {
   async addNewContact(name, number, owner) {
     try {
       // checking the contact for uniqueness
-      const candidate = await contactDatabaseService.findContactInDatabase(
-        name
-      );
+      const candidate = await contactAdapter.findContact(name);
       if (candidate) {
         return { success: "Such a contact already exists" };
       }
@@ -48,11 +46,12 @@ class contactHttpService {
 
       //перевірка чи може користувач видалити контакт
       const validationDeletion = await contactAdapter.findContact(name);
+
       if (validationDeletion.owner == userId || userRole == "admin") {
         await contactAdapter.deleteContact(name);
         return { success: `Contact ${name} has been deleted` };
       } else {
-        return { success: "You don't have enough rights" };
+        return { message: "You don't have enough rights" };
       }
     } catch (error) {
       return error;
